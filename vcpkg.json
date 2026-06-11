@@ -1,0 +1,9 @@
+{
+  "dependencies": [
+    "openexr",
+    "openvdb",
+    "tbb",
+    "boost-math",
+    "libjpeg-turbo"
+  ]
+}

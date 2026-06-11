@@ -1,0 +1,272 @@
+{
+    "media": [
+        {
+            "name": "gp",
+            "phase_function": {
+                "type": "brdf",
+                "bsdf": {
+                    "albedo": 1,
+                    "type": "conductor",
+                    "material": "Cu"
+                }
+            },
+            "max_bounces": 1024,
+            "type": "pratical_gaussian_process",
+            "sample_points":8,
+            "fast":true,
+            "fast_lb_skip":true,
+            "fast_SVO":true,
+            "fast_SVO_local_sigma":false,
+            "processBox":{
+            "transform": {
+                "position": [
+                    0,
+                    1.001,
+                    0
+                ],
+                "scale": [
+                    4,
+                    2,
+                    2
+                ],
+                "rotation": [
+                    0,
+                    0,
+                    0
+                ]
+            }
+            },
+            "sigma_a": 0.0,
+            "sigma_s": 1.0,
+            "density": 1,
+			"step_size": 0.01,
+            "1d_noise":true,
+            "enable_NEE":false,
+            "stratified_impulses":false,
+            "bernoulli_weights": false,
+            "single_realization":false,
+            "impulse_per_cell":10,
+            "bounding_min":[-2.1,-1.6,-2.1],
+			"intersect_method": "gp_discrete",
+			"normal_method": "conditioned_gaussian",
+            "gaussian_process": {
+                "type": "standard",
+                "id":0,
+                "mean": {
+                    "type": "tabulated",
+                    "grid": {
+                        "type": "vdb",
+                        "file": "dragon.vdb",
+                        "request_sdf": true,
+                        "density_name": "ls_dragon",
+                        "normalize_size": false,
+                        "integration_method": "raymarching",
+                        "interpolate": "quadratic",
+                        "transform": {
+                            "position": [
+                                0.0,
+                                0.37,
+                                0.0
+                            ],
+                            "scale": 0.01,
+                            "rotation": [
+                                0.0,
+                                180.0,
+                                0.0
+                            ]
+                        }
+                    }
+                }
+                ,
+                "covariance": {
+                    "type": "svls_squared_exponential",
+                    "aniso":[1,1,1],
+                    "sigma": {
+                        "type": "noise",
+                        "noise": "bottom_top",
+                        "min": 3.0,
+                        "max": 0.1,
+                        "start": 0,
+                        "end": 1.33
+                    },
+                    "ls": {
+                        "type": "noise",
+                        "noise": "left_right",
+                        "min": 0.0316,
+                        "max": 0.223,
+                        "start": -0.5,
+                        "end": 0.0
+                    }
+                }
+            }
+                
+        }
+    ],
+    "bsdfs": [
+        {
+            "name": "processBox",
+            "albedo": 1.0,
+            "type": "forward"
+        },
+        {
+            "name": "rough_metal",
+            "albedo": 1,
+            "type": "rough_conductor",
+            "material": "Cu",
+            "distribution": "beckmann",
+            "roughness": 0.1
+        },
+        {
+            "name": "light",
+            "albedo": 1,
+            "type": "null"
+        }
+    ],
+    "primitives": [
+        {
+            "name": "processBox",
+            "transform": {
+                "position": [
+                    0,
+                    1.001,
+                    0
+                ],
+                "scale": [
+                    4,
+                    2,
+                    2
+                ],
+                "rotation": [
+                    0,
+                    0,
+                    0
+                ]
+            },
+            "type": "cube",
+            "bsdf": "processBox",
+            "int_medium": "gp"
+        },
+        {
+            "name": "Floor",
+            "transform": {
+                "position": [
+                    0,
+                    -0.01,
+                    0
+                ],
+                "rotation": [
+                    0,
+                    65,
+                    0
+                ],
+                "scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "type": "mesh",
+            "file": "background.obj",
+            "smooth": true,
+            "backface_culling": false,
+            "recompute_normals": true,
+            "bsdf": {
+                "albedo": 0.2,
+                "type": "lambert"
+            }
+        },
+        {
+            "bump_strength": 1,
+            "transform": {
+                "position": [
+                    0,
+                    0,
+                    1.17369
+                ],
+                "rotation": [
+                    0,
+                    -67.2614,
+                    0
+                ]
+            },
+            "emission": "FlowCheck.hdr",
+            "scale": 0.7,
+            "type": "infinite_sphere",
+            "sample": true,
+            "bsdf": {
+                "albedo": 1,
+                "type": "null"
+            }
+        },
+        {
+            "name": "light",
+            "transform": {
+                "position": [
+                    0,
+                    5,
+                    0
+                ],
+                "scale": 1,
+                "rotation": [
+                    180,
+                    0,0
+                ]
+            },
+            "power": [
+                300,
+                300,
+                300
+            ],
+            "type": "quad",
+            "bsdf": "light"
+        }
+    ],
+    "camera": {
+        "tonemap": "filmic",
+        "resolution": [
+            1024, 512
+        ],
+        "reconstruction_filter": "tent",
+        "transform": {
+            "position": [
+                -1,
+                1.0,
+                3
+            ],
+            "look_at": [
+                0,
+                0.4,
+                0
+            ],
+            "up": [
+                0.0,
+                1.0,
+                0.0
+            ]
+        },
+        "type": "pinhole",
+        "fov": 45.0
+    },
+    "integrator": {
+        "min_bounces": 0,
+        "max_bounces": 20,
+        "enable_consistency_checks": false,
+        "enable_two_sided_shading": true,
+        "type": "path_tracer",
+        "enable_light_sampling": true,
+        "enable_volume_light_sampling": false,
+        "include_surfaces": true
+    },
+    "renderer": {
+        "overwrite_output_files": false,
+        "adaptive_sampling": false,
+        "enable_resume_render": false,
+        "stratified_sampler": false,
+        "scene_bvh": true,
+        "spp": 1024,
+        "spp_step": 1,
+        "timeout": "10m",
+        "output_file": "",
+        "hdr_output_file": "dragon.pfm"
+    }
+}
