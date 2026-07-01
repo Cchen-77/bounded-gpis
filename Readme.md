@@ -4,7 +4,7 @@
 ## About ##
 Code for our [2026 SIGGRAPH paper](https://cchen-77.github.io/projects/bounded-gpis/): Bounding Stratified Bernoulli Impulses for Ray Marching Gaussian Process Implicit Surfaces. It is based on the GPIS implementation from [Seyb et al. 2024](https://github.com/daseyb/gpis-light-transport). 
 
-To enable our method, turn on the **fast** option in `PracticalGPISMedium`. A working example is available at `./data/example-scenes/gpis-dragon`.
+To enable our method, turn on the **fast** option in `PracticalGaussianProcessMedium`. A working example is available at `./data/example-scenes/gpis-dragon`.
 
 ```bibtex
 @article{chen2026bounding,
